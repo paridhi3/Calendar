@@ -1,8 +1,3 @@
-/// <reference types="next" />
-/// <reference types="next/image-types/global" />
-
-// NOTE: This file should not be edited
-// see https://nextjs.org/docs/basic-features/typescript for more information.
 import NextAuth from "next-auth";
 
 declare module "next-auth" {
@@ -13,5 +8,9 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
     };
+  }
+
+  interface User {
+    id: string;
   }
 }
