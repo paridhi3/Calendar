@@ -8,10 +8,8 @@ export async function PUT(req: Request, { params }: any) {
     where: { id: params.id },
     data: {
       title: data.title,
-      description: data.description ?? null,
       date: new Date(data.date),
       reminderAt: data.reminderAt ? new Date(data.reminderAt) : null,
-      color: data.color ?? null
     }
   })
   return NextResponse.json(updated)
