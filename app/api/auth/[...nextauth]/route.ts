@@ -20,7 +20,7 @@ const handler = NextAuth({
           create: { email: user.email, name: user.name },
         });
         return true;
-      } catch {
+      } catch(err) {
         console.error("Sign-in error:", err);
         return false;
       }
