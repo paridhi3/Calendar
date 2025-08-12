@@ -21,6 +21,7 @@ const handler = NextAuth({
         });
         return true;
       } catch {
+        console.error("Sign-in error:", err);
         return false;
       }
     },
