@@ -8,6 +8,11 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: "openid email profile",
+        },
+      },
     }),
   ],
   callbacks: {
@@ -20,7 +25,7 @@ const handler = NextAuth({
           create: { email: user.email, name: user.name },
         });
         return true;
-      } catch(err) {
+      } catch (err) {
         console.error("Sign-in error:", err);
         return false;
       }
