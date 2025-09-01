@@ -102,7 +102,7 @@ export default function Calendar() {
       </div>
 
       {/* Calendar days grid */}
-      <div className="grid grid-cols-7 gap-2 mt-2">
+      <div className="grid grid-cols-7 gap-2 mt-2 auto-rows-[80px] sm:auto-rows-[100px]">
         {days.map((day) => {
           const dayEvents = events.filter(
             (e) => new Date(e.date).toDateString() === day.toDateString()
