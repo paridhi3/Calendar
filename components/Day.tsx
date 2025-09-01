@@ -35,14 +35,14 @@ export default function Day({
 
   return (
     <div
-      className={`relative border rounded p-2 min-h-[120px] max-h-[200px] cursor-pointer group transition-all
-      ${
-        today
-          ? "bg-gradient-to-br from-yellow-300 to-white text-white border-yellow-500 shadow-lg shadow-pink-300"
-          : isCurrentMonth
-          ? "bg-white/60"
-          : "bg-black/20 text-black"
-      }`}
+      className={`relative border rounded p-2 aspect-square cursor-pointer group transition-all
+    ${
+      today
+        ? "bg-gradient-to-br from-yellow-300 to-white text-white border-yellow-500 shadow-lg shadow-pink-300"
+        : isCurrentMonth
+        ? "bg-white/60"
+        : "bg-black/20 text-black"
+    }`}
       onClick={handleClick}
       role="button"
       tabIndex={0}
