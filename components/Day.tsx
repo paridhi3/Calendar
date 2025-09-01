@@ -5,7 +5,7 @@ import { useState } from "react";
 import EventCard from "./EventCard";
 import { FaPlus } from "react-icons/fa";
 import EventModal from "./EventModal";
-import {toLocalNoon} from "../lib/utils"
+import { toLocalNoon } from "../lib/utils";
 
 interface DayProps {
   date: Date;
@@ -63,9 +63,10 @@ export default function Day({
       </div>
 
       <div className="mt-2 space-y-2 max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-400">
-        {events.map((ev) => (
-          <EventCard key={ev.id} event={ev} onSaved={onUpdated} user={user}/>
-        ))}
+        {user &&
+          events.map((ev) => (
+            <EventCard key={ev.id} event={ev} onSaved={onUpdated} user={user} />
+          ))}
 
         {events.length > 0 && (
           <div

@@ -24,7 +24,7 @@ function Header() {
   }, [profileClick]);
 
   return (
-    <header className="bg-white/30 backdrop-blur-md sticky top-0 z-50 h-20">
+    <header className="bg-white sticky top-0 z-50 h-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex justify-between items-center">
         {/* Logo + Title */}
         <Link href="/" className="flex items-center space-x-2 cursor-pointer">
@@ -48,7 +48,7 @@ function Header() {
                 <div className="absolute top-12 right-0 bg-white border shadow-lg rounded-md w-32 z-50">
                   <Link href="/">
                     <button className="block w-full text-left px-4 py-2 text-sm cursor-pointer font-bold text-gray-700 hover:text-pink-500">
-                      Dashboard
+                      My events
                     </button>
                   </Link>
                   <button

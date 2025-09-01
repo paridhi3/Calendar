@@ -23,6 +23,7 @@ export default function Calendar() {
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
+  const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<any[]>([]);
   const [openEventDate, setOpenEventDate] = useState<Date | null>(null);
@@ -33,10 +34,15 @@ export default function Calendar() {
   const days = eachDayOfInterval({ start, end });
 
   useEffect(() => {
-    fetchEvents();
-  }, [currentDate]);
+    if (user) {
+      fetchEvents();
+    } else {
+      setEvents([]); // clear events if logged out
+    }
+  }, [currentDate, user]);
 
   async function fetchEvents() {
+    if (!user) return; // extra safety
     const res = await fetch(
       `/api/events?start=${start.toISOString()}&end=${end.toISOString()}`
     );
@@ -45,6 +51,16 @@ export default function Calendar() {
       setEvents(data);
     }
   }
+
+  // async function fetchEvents() {
+  //   const res = await fetch(
+  //     `/api/events?start=${start.toISOString()}&end=${end.toISOString()}`
+  //   );
+  //   if (res.ok) {
+  //     const data = await res.json();
+  //     setEvents(data);
+  //   }
+  // }
 
   function handleCreateEvent(day: Date) {
     if (user) {

@@ -1,18 +1,16 @@
-// app/api/auth/[...nextauth]/route.js
-import NextAuth from "next-auth";
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   debug: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
-        params: {
-          scope: "openid email profile",
-        },
+        params: { scope: "openid email profile" },
       },
     }),
   ],
@@ -38,12 +36,14 @@ const handler = NextAuth({
           where: { email: session.user.email },
         });
         if (dbUser) {
-          session.user.id = dbUser.id;
+          session.user.id = dbUser.id; // 🔑 add userId to session
         }
       }
       return session;
     },
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
