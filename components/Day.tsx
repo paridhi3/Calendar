@@ -62,7 +62,7 @@ export default function Day({
         </div>
       </div>
 
-      <div className="mt-2 space-y-2 sm:max-h-16 md:max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-400">
+      <div className="mt-2 space-y-2 max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-400">
         {user &&
           events.map((ev) => (
             <EventCard key={ev.id} event={ev} onSaved={onUpdated} user={user} />
