@@ -35,7 +35,7 @@ export default function Day({
 
   return (
     <div
-      className={`relative border rounded p-2 aspect-square cursor-pointer group transition-all
+      className={`relative border rounded p-2 cursor-pointer group transition-all
     ${
       today
         ? "bg-gradient-to-br from-yellow-300 to-white text-white border-yellow-500 shadow-lg shadow-pink-300"
