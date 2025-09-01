@@ -18,12 +18,13 @@ import LoginModal from "./LoginModal";
 import { useSession } from "next-auth/react";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { toLocalNoon } from "../lib/utils";
+import { useLoader } from "../context/LoaderContext";
 
 export default function Calendar() {
   const { data: session } = useSession();
   const user = session?.user ?? null;
 
-  const [loading, setLoading] = useState(true);
+  const { loading, setLoading } = useLoader();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<any[]>([]);
   const [openEventDate, setOpenEventDate] = useState<Date | null>(null);
@@ -42,25 +43,22 @@ export default function Calendar() {
   }, [currentDate, user]);
 
   async function fetchEvents() {
-    if (!user) return; // extra safety
-    const res = await fetch(
-      `/api/events?start=${start.toISOString()}&end=${end.toISOString()}`
-    );
-    if (res.ok) {
-      const data = await res.json();
-      setEvents(data);
+    if (!user) return;
+    try {
+      setLoading(true); // show loader
+      const res = await fetch(
+        `/api/events?start=${start.toISOString()}&end=${end.toISOString()}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setEvents(data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // hide loader
     }
   }
-
-  // async function fetchEvents() {
-  //   const res = await fetch(
-  //     `/api/events?start=${start.toISOString()}&end=${end.toISOString()}`
-  //   );
-  //   if (res.ok) {
-  //     const data = await res.json();
-  //     setEvents(data);
-  //   }
-  // }
 
   function handleCreateEvent(day: Date) {
     if (user) {

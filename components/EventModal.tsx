@@ -2,6 +2,7 @@
 "use client";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useLoader } from "../context/LoaderContext";
 
 interface EventModalProps {
   initialDate: Date;
@@ -18,6 +19,7 @@ export default function EventModal({
 }: EventModalProps) {
   const { data: session } = useSession();
   const user = session?.user;
+  const { setLoading } = useLoader();
 
   const [title, setTitle] = useState(event?.title ?? "");
   const [date, setDate] = useState(
@@ -28,7 +30,9 @@ export default function EventModal({
       : ""
   );
   const [reminderAt, setReminderAt] = useState(
-    event?.reminderAt ? new Date(event.reminderAt).toISOString().slice(0, 16) : ""
+    event?.reminderAt
+      ? new Date(event.reminderAt).toISOString().slice(0, 16)
+      : ""
   );
 
   async function save() {
@@ -50,6 +54,7 @@ export default function EventModal({
     };
 
     try {
+      setLoading(true);
       const res = await fetch(`/api/events`, {
         method: event ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,13 +62,16 @@ export default function EventModal({
       });
       if (!res.ok) throw new Error("Failed to save event");
 
-      if (payload.reminderAt) scheduleBrowserNotification(payload.title, payload.reminderAt);
+      if (payload.reminderAt)
+        scheduleBrowserNotification(payload.title, payload.reminderAt);
 
       onSaved();
       onClose();
     } catch (error) {
       alert("Failed to save event");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -86,7 +94,9 @@ export default function EventModal({
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
       <div className="bg-white dark:bg-slate-800 p-6 rounded-md max-w-md w-full shadow-lg">
-        <h3 className="text-lg font-semibold mb-3">{event ? "Edit event" : "Create event"}</h3>
+        <h3 className="text-lg font-semibold mb-3">
+          {event ? "Edit event" : "Create event"}
+        </h3>
         <input
           className="w-full mb-2 input"
           placeholder="Title"
@@ -101,7 +111,9 @@ export default function EventModal({
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <label className="text-sm font-medium block mb-1">Reminder (optional)</label>
+        <label className="text-sm font-medium block mb-1">
+          Reminder (optional)
+        </label>
         <input
           type="datetime-local"
           className="w-full mb-4 input"
@@ -112,7 +124,10 @@ export default function EventModal({
           <button className="px-3 py-1 rounded border" onClick={onClose}>
             Cancel
           </button>
-          <button className="px-3 py-1 rounded bg-indigo-600 text-white" onClick={save}>
+          <button
+            className="px-3 py-1 rounded bg-indigo-600 text-white"
+            onClick={save}
+          >
             Save
           </button>
         </div>
