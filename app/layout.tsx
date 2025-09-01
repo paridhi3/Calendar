@@ -2,6 +2,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 import Provider from "./provider";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "Calendar",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Provider>
             <Header />
             {children}
+            <Footer />
           </Provider>
         </div>
       </body>
